@@ -13,7 +13,7 @@ data class ExperimentState(
     val currentRunningTime: Long
 )
 
-class ExperimentViewModel(experimentId: Long, ) : ViewModel() {
+class ExperimentViewModel(experimentId: Long) : ViewModel() {
 
     val experimentStateFlow = MutableStateFlow(
         ExperimentState(

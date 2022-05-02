@@ -1,14 +1,21 @@
 package ducletran.tech.imutransformer.ui.datacollection
 
+import android.content.Context
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import ducletran.tech.imutransformer.model.ExperimentStep
 import ducletran.tech.imutransformer.ui.utils.SlotLayoutData
 import ducletran.tech.imutransformer.ui.viewmodel.ExperimentViewModel
+import ducletran.tech.imutransformer.utils.FileHelper
+import timber.log.Timber
+import java.io.File
+import java.io.FileOutputStream
+import java.io.OutputStreamWriter
 
 @Composable
 fun ExperimentScreenWithNav(
@@ -52,11 +59,32 @@ fun ExperimentScreenWithNav(
             )
         }
         is ExperimentStep.Running -> {
+            val context = LocalContext.current
+            val externalCacheFile =
+                File(context.getExternalFilesDir(null), FileHelper.randomFileName())
+            val stream = FileOutputStream(externalCacheFile)
+            stream.write(FileHelper.columnNames.toByteArray())
+            stream.write("\n".toByteArray())
+
             SensorDataCollectionScreen(
                 preparationTime = step.initialDelayTime,
                 runningTime = step.runningTime,
                 onRunFinished = {
+                    stream.close()
                     experimentViewModel.nextStep()
+                },
+                onSensorDataCollected = {
+                    val previousStep = state.steps[state.currentStepIndex - 1]
+                    if (previousStep is ExperimentStep.Instruction) {
+                        stream.write(
+                            FileHelper.formatSensorData(
+                                sensorData = it,
+                                activityLabel = previousStep.activityLabel,
+                                phoneStateLabel = previousStep.phoneStateLabel
+                            ).toByteArray()
+                        )
+                        stream.write("\n".toByteArray())
+                    }
                 }
             )
         }
