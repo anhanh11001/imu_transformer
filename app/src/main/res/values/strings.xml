@@ -21,4 +21,6 @@
     <string name="label_list">Label list</string>
     <string name="ai_model">AI model - Context Detection</string>
     <string name="create_label">Create label</string>
+    <string name="running_experiment">Running experiment</string>
+    <string name="experiment_starting">Experiment is about to start</string>
 </resources>
