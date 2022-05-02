@@ -17,6 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.google.accompanist.flowlayout.FlowRow
 import ducletran.tech.imutransformer.R
 import ducletran.tech.imutransformer.model.Label
@@ -24,7 +25,12 @@ import ducletran.tech.imutransformer.ui.theme.IMUTransformerTheme
 import ducletran.tech.imutransformer.ui.utils.RandomColorGenerator
 
 @Composable
-fun IntelligenceModelScreen(
+fun IntelligenceModelScreenWithNav(navController: NavController) {
+    IntelligenceModelScreen(detectedLabels = emptyMap(), isRunning = false)
+}
+
+@Composable
+private fun IntelligenceModelScreen(
     modifier: Modifier = Modifier,
     detectedLabels: Map<Label, Double>,
     isRunning: Boolean
@@ -112,7 +118,9 @@ private fun LabelWithAccuracy(
     accuracy: Double
 ) {
     Card(
-        modifier = modifier.fillMaxWidth().padding(bottom = 8.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(bottom = 8.dp),
         elevation = 4.dp
     ) {
         val annotated = buildAnnotatedString {

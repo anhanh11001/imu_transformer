@@ -17,18 +17,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import ducletran.tech.imutransformer.R
 import ducletran.tech.imutransformer.model.LabelType
 import ducletran.tech.imutransformer.ui.theme.IMUTransformerTheme
 
 @Composable
-fun CreateLabelScreen(modifier: Modifier = Modifier) {
+fun CreateLabelScreenMain(navController: NavController) {
+    CreateLabelScreen(modifier = Modifier.fillMaxSize())
+}
+
+@Composable
+private fun CreateLabelScreen(modifier: Modifier = Modifier) {
     var labelName by rememberSaveable { mutableStateOf("") }
     var selectedLabelType by remember { mutableStateOf(LabelType.PHONE_STATE) }
     Column(modifier.padding(horizontal = 16.dp)) {
         Spacer(modifier = Modifier.height(16.dp))
         OutlinedTextField(
-            modifier = Modifier.padding(bottom = 16.dp).fillMaxWidth(),
+            modifier = Modifier
+                .padding(bottom = 16.dp)
+                .fillMaxWidth(),
             value = labelName,
             onValueChange = { labelName = it },
             placeholder = {

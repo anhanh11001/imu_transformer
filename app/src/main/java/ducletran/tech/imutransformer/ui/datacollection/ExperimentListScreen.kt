@@ -1,6 +1,5 @@
 package ducletran.tech.imutransformer.ui.datacollection
 
-import android.widget.Space
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,6 +15,7 @@ import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import ducletran.tech.imutransformer.ui.theme.IMUTransformerTheme
 import ducletran.tech.imutransformer.ui.theme.OrangeLight
 
@@ -25,7 +25,17 @@ data class Experiment(
 )
 
 @Composable
-fun ExperimentListScreen(
+fun ExperimentListScreenWithNav(navController: NavController) {
+    ExperimentListScreen(
+        modifier = Modifier.fillMaxSize(),
+        experiments = emptyList(),
+        onExperimentClick = {}
+    )
+}
+
+
+@Composable
+private fun ExperimentListScreen(
     modifier: Modifier = Modifier,
     experiments: List<Experiment>,
     onExperimentClick: (Experiment) -> Unit

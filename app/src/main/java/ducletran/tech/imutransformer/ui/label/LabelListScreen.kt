@@ -1,5 +1,6 @@
 package ducletran.tech.imutransformer.ui.label
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,13 +15,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import ducletran.tech.imutransformer.R
 import ducletran.tech.imutransformer.model.Label
 import ducletran.tech.imutransformer.ui.components.FullScreenText
 import ducletran.tech.imutransformer.ui.theme.IMUTransformerTheme
 
 @Composable
-fun LabelListScreen(
+fun LabelListScreenWithNav(
+    navController: NavController
+) {
+    LabelListScreen(
+        modifier = Modifier.fillMaxSize(),
+        labelList = emptyList()
+    )
+}
+
+@Composable
+private fun LabelListScreen(
     modifier: Modifier = Modifier,
     labelList: List<Label>
 ) {
