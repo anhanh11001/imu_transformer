@@ -1,16 +1,23 @@
 package ducletran.tech.imutransformer.ui.datacollection
 
+import android.content.Context
+import android.os.Build
+import android.os.VibrationEffect
+import android.os.Vibrator
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.getSystemService
 import ducletran.tech.imutransformer.R
 import ducletran.tech.imutransformer.ui.theme.IMUTransformerTheme
+import ducletran.tech.imutransformer.utils.HardwareSupport
 import ducletran.tech.imutransformer.utils.tickerFlow
 import kotlinx.coroutines.flow.collectLatest
 import java.math.RoundingMode
@@ -26,6 +33,7 @@ fun SensorDataCollectionScreen(
     onRunFinished: () -> Unit
 ) {
     var currentTime by remember { mutableStateOf(0.00) }
+    var vibrated by remember { mutableStateOf(false) }
     val isExperimentStarted = currentTime > preparationTime
     val formattedExperimentTime = if (isExperimentStarted) {
         val runningTimeInSeconds = runningTime / 1000
@@ -57,11 +65,16 @@ fun SensorDataCollectionScreen(
         }
     }
 
+    val context = LocalContext.current
     LaunchedEffect(key1 = "time_flow", block = {
         val tickingTime = 100
         tickerFlow(tickingTime.milliseconds).collectLatest {
             if (currentTime > preparationTime + runningTime) {
-                onRunFinished()
+                if (!vibrated) {
+                    vibrated = true
+                    HardwareSupport.oneShotVibrate(context)
+                    onRunFinished()
+                }
             } else {
                 currentTime += tickingTime
             }

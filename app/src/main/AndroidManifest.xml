@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="ducletran.tech.imutransformer">
 
+    <uses-permission android:name="android.permission.VIBRATE" />
     <application
         android:name=".IMUApplication"
         android:allowBackup="true"
