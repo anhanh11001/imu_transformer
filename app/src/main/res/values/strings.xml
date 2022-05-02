@@ -3,4 +3,17 @@
     <string name="data">Data</string>
     <string name="label">Label</string>
     <string name="model">Model</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="enter_step_count">Please enter the number of step you have walked below</string>
+    <string name="confirm">Confirm</string>
+    <string name="pre_text_activity_description">You have to do:</string>
+    <string name="pre_text_phone_state_description">while your phone is in the state of:</string>
+    <string name="ai_description">Click start to run the Deep Learning model for smartphone context detection. Click stop when you are not using the app as this is a battery-consuming task.</string>
+    <string name="detecting">Detecting</string>
+    <string name="description">Description</string>
+    <string name="empty_labels_description">No labels created. Click + to create a new label</string>
+    <string name="enter_label_name">Enter the label\'s name</string>
+    <string name="label_name">Label Name</string>
+    <string name="select_label_type">Select label type</string>
 </resources>
