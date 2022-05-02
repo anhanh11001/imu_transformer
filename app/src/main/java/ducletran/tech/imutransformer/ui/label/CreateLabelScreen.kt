@@ -17,18 +17,30 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ducletran.tech.imutransformer.R
 import ducletran.tech.imutransformer.model.LabelType
 import ducletran.tech.imutransformer.ui.theme.IMUTransformerTheme
+import ducletran.tech.imutransformer.ui.viewmodel.LabelViewModel
 
 @Composable
 fun CreateLabelScreenMain(navController: NavController) {
-    CreateLabelScreen(modifier = Modifier.fillMaxSize())
+    val labelViewModel: LabelViewModel = hiltViewModel()
+    CreateLabelScreen(
+        modifier = Modifier.fillMaxSize(),
+        onConfirm = { labelName, labelType ->
+            labelViewModel.createLabel(labelName, labelType)
+            navController.popBackStack()
+        }
+    )
 }
 
 @Composable
-private fun CreateLabelScreen(modifier: Modifier = Modifier) {
+private fun CreateLabelScreen(
+    modifier: Modifier = Modifier,
+    onConfirm: (String, LabelType) -> Unit
+) {
     var labelName by rememberSaveable { mutableStateOf("") }
     var selectedLabelType by remember { mutableStateOf(LabelType.PHONE_STATE) }
     Column(modifier.padding(horizontal = 16.dp)) {
@@ -69,7 +81,9 @@ private fun CreateLabelScreen(modifier: Modifier = Modifier) {
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Button(onClick = { }) {
+            Button(onClick = {
+                onConfirm(labelName, selectedLabelType)
+            }) {
                 Text(text = stringResource(id = R.string.confirm))
             }
         }
@@ -80,6 +94,6 @@ private fun CreateLabelScreen(modifier: Modifier = Modifier) {
 @Composable
 private fun PreviewCreateLabel() {
     IMUTransformerTheme {
-        CreateLabelScreen()
+        CreateLabelScreen(onConfirm = { _, _ -> })
     }
 }

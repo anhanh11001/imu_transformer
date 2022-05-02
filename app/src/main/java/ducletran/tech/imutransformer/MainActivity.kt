@@ -19,6 +19,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import dagger.hilt.android.AndroidEntryPoint
 import ducletran.tech.imutransformer.ui.components.FullScreenText
 import ducletran.tech.imutransformer.ui.datacollection.ExperimentListScreenWithNav
 import ducletran.tech.imutransformer.ui.label.CreateLabelScreenMain
@@ -29,6 +30,7 @@ import ducletran.tech.imutransformer.ui.navigation.IMUScreen
 import ducletran.tech.imutransformer.ui.theme.IMUTransformerTheme
 import timber.log.Timber
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
