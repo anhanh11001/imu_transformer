@@ -7,18 +7,29 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import ducletran.tech.imutransformer.model.ExperimentStep
+import ducletran.tech.imutransformer.ui.utils.SlotLayoutData
 import ducletran.tech.imutransformer.ui.viewmodel.ExperimentViewModel
 
 @Composable
 fun ExperimentScreenWithNav(
     navController: NavController,
-    experimentId: Long
+    experimentId: Long,
+    onUpdateMainLayout: (SlotLayoutData) -> Unit
 ) {
     val experimentViewModel: ExperimentViewModel = viewModel(
         factory = ExperimentViewModel.Factory(experimentId)
     )
 
     val state = experimentViewModel.experimentStateFlow.collectAsState().value
+    val formattedTopBarName = buildString {
+        append(state.name)
+        append(" (")
+        append(state.currentStepIndex + 1)
+        append("/")
+        append(state.steps.size)
+        append(")")
+    }
+    onUpdateMainLayout(SlotLayoutData(formattedTopBarName, true))
     when (val step = state.steps[state.currentStepIndex]) {
         ExperimentStep.Finish -> {
             FinishExperimentScreen(modifier = Modifier.fillMaxSize())

@@ -7,9 +7,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -27,11 +30,13 @@ import ducletran.tech.imutransformer.ui.datacollection.ExperimentListScreenWithN
 import ducletran.tech.imutransformer.ui.datacollection.ExperimentScreenWithNav
 import ducletran.tech.imutransformer.ui.label.CreateLabelScreenMain
 import ducletran.tech.imutransformer.ui.label.LabelListScreenWithNav
-import ducletran.tech.imutransformer.ui.model.IntelligenceModelScreenWithNav
+import ducletran.tech.imutransformer.ui.ai.IntelligenceModelScreenWithNav
 import ducletran.tech.imutransformer.ui.navigation.BottomTab
 import ducletran.tech.imutransformer.ui.navigation.IMUScreen
 import ducletran.tech.imutransformer.ui.theme.IMUTransformerTheme
+import ducletran.tech.imutransformer.ui.utils.SlotLayoutData
 import timber.log.Timber
+
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -42,7 +47,23 @@ class MainActivity : ComponentActivity() {
         setContent {
             IMUTransformerTheme {
                 val navController = rememberNavController()
+                var layoutData by rememberSaveable { mutableStateOf(SlotLayoutData("IMU App Data")) }
+
                 Scaffold(
+                    topBar = {
+                        TopAppBar(
+                            title = { Text(text = layoutData.text) },
+                            navigationIcon = if (layoutData.isBackButtonEnabled) {
+                                {
+                                    IconButton(onClick = { navController.popBackStack() }) {
+                                        Icon(Icons.Filled.ArrowBack, null)
+                                    }
+                                }
+                            } else {
+                                null
+                            }
+                        )
+                    },
                     bottomBar = {
                         BottomNavigation {
                             val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -75,30 +96,14 @@ class MainActivity : ComponentActivity() {
                     floatingActionButtonPosition = FabPosition.End,
                     isFloatingActionButtonDocked = false,
                     floatingActionButton = {
-                        val supportedRoutes = setOf(
-                            BottomTab.Data.route,
-                            BottomTab.Label.route
-                        )
-                        FloatingActionButton(
-                            shape = CircleShape,
-                            onClick = {
-                                val currentRoute = navController
-                                    .currentBackStackEntry
-                                    ?.destination
-                                    ?.route
-                                when (currentRoute) {
-                                    BottomTab.Data.route -> {
-                                        navController.navigate(IMUScreen.CreateExperiment.route)
-                                    }
-                                    BottomTab.Label.route -> {
-                                        navController.navigate(IMUScreen.CreateLabel.route)
-                                    }
-                                    else -> { // Do nothing
-                                    }
-                                }
+                        val onFabClick = layoutData.onFabSelected
+                        if (onFabClick != null) {
+                            FloatingActionButton(
+                                shape = CircleShape,
+                                onClick = onFabClick
+                            ) {
+                                Icon(Icons.Rounded.Add, null)
                             }
-                        ) {
-                            Icon(Icons.Rounded.Add, null)
                         }
                     }
                 ) { innerPadding ->
@@ -108,15 +113,32 @@ class MainActivity : ComponentActivity() {
                         Modifier.padding(innerPadding)
                     ) {
                         composable(BottomTab.Data.route) {
+                            layoutData = SlotLayoutData(
+                                stringResource(id = R.string.select_experiment),
+                                onFabSelected = {
+                                    navController.navigate(IMUScreen.CreateExperiment.route)
+                                }
+                            )
                             ExperimentListScreenWithNav(navController = navController)
                         }
                         composable(BottomTab.Label.route) {
+                            layoutData = SlotLayoutData(
+                                stringResource(id = R.string.label_list),
+                                onFabSelected = {
+                                    navController.navigate(IMUScreen.CreateLabel.route)
+                                }
+                            )
                             LabelListScreenWithNav(navController = navController)
                         }
                         composable(BottomTab.Model.route) {
+                            layoutData = SlotLayoutData(stringResource(id = R.string.ai_model))
                             IntelligenceModelScreenWithNav(navController = navController)
                         }
                         composable(IMUScreen.CreateLabel.route) {
+                            layoutData = SlotLayoutData(
+                                text = stringResource(id = R.string.create_label),
+                                isBackButtonEnabled = true
+                            )
                             CreateLabelScreenMain(navController = navController)
                         }
                         composable(IMUScreen.CreateExperiment.route) {
@@ -128,7 +150,8 @@ class MainActivity : ComponentActivity() {
                         ) {
                             ExperimentScreenWithNav(
                                 navController = navController,
-                                experimentId = requireNotNull(it.arguments?.getLong("id"))
+                                experimentId = requireNotNull(it.arguments?.getLong("id")),
+                                onUpdateMainLayout = { layoutData = it }
                             )
                         }
                     }

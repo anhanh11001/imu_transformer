@@ -1,4 +1,4 @@
-package ducletran.tech.imutransformer.ui.model
+package ducletran.tech.imutransformer.ui.ai
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn

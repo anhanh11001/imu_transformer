@@ -8,17 +8,17 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 data class ExperimentState(
     val steps: List<ExperimentStep>,
+    val name: String,
     val currentStepIndex: Int,
     val currentRunningTime: Long
 )
 
-class ExperimentViewModel(
-    private val experimentId: Long,
-) : ViewModel() {
+class ExperimentViewModel(experimentId: Long, ) : ViewModel() {
 
     val experimentStateFlow = MutableStateFlow(
         ExperimentState(
             steps = DefaultExperimentSteps.find(experimentId).steps,
+            name = DefaultExperimentSteps.find(experimentId).description,
             currentRunningTime = 0L,
             currentStepIndex = 0
         )
