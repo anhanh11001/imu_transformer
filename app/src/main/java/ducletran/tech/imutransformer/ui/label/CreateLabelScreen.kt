@@ -18,7 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ducletran.tech.imutransformer.R
-import ducletran.tech.imutransformer.data.LabelType
+import ducletran.tech.imutransformer.model.LabelType
 import ducletran.tech.imutransformer.ui.theme.IMUTransformerTheme
 
 @Composable

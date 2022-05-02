@@ -19,7 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.flowlayout.FlowRow
 import ducletran.tech.imutransformer.R
-import ducletran.tech.imutransformer.data.Label
+import ducletran.tech.imutransformer.model.Label
 import ducletran.tech.imutransformer.ui.theme.IMUTransformerTheme
 import ducletran.tech.imutransformer.ui.utils.RandomColorGenerator
 

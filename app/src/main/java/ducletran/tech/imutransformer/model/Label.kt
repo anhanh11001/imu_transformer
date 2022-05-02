@@ -1,4 +1,4 @@
-package ducletran.tech.imutransformer.data
+package ducletran.tech.imutransformer.model
 
 sealed class Label(
     open val name: String,

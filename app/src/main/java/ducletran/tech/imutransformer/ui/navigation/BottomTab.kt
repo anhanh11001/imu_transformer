@@ -17,3 +17,4 @@ sealed class BottomTab(
         val items = listOf(Data, Label, Model)
     }
 }
+

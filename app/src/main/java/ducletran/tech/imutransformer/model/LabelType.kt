@@ -1,4 +1,4 @@
-package ducletran.tech.imutransformer.data
+package ducletran.tech.imutransformer.model
 
 enum class LabelType(val description: String) {
     PHONE_STATE("Phone State"),
