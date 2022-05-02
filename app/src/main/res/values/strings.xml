@@ -16,4 +16,5 @@
     <string name="enter_label_name">Enter the label\'s name</string>
     <string name="label_name">Label Name</string>
     <string name="select_label_type">Select label type</string>
+    <string name="select_experiment_description">Select an experiment to run</string>
 </resources>

@@ -1,7 +1,7 @@
 package ducletran.tech.imutransformer.ui.datacollection
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -14,16 +14,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ducletran.tech.imutransformer.R
 import ducletran.tech.imutransformer.model.Label
 import ducletran.tech.imutransformer.model.LabelType
+import ducletran.tech.imutransformer.ui.theme.IMUTransformerTheme
 
 @Composable
 fun InstructionScreen(
     modifier: Modifier = Modifier,
     activityLabel: Label,
-    phoneStateLabel: Label
+    phoneStateLabel: Label,
+    onStartClick: () -> Unit
 ) {
     require(activityLabel.type == LabelType.HUMAN_ACTIVITY)
     require(phoneStateLabel.type == LabelType.PHONE_STATE)
@@ -42,19 +45,29 @@ fun InstructionScreen(
                 append(phoneStateLabel.name.uppercase())
             }
         }
-        Text(
-            text = annotated,
-            textAlign = TextAlign.Center,
-            fontSize = 20.sp
-        )
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(
+                text = annotated,
+                textAlign = TextAlign.Center,
+                fontSize = 20.sp
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Button(onClick = onStartClick) {
+                Text(text = stringResource(id = R.string.start))
+            }
+        }
+
     }
 }
 
 @Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
 @Composable
 private fun PreviewInstruction() {
-    InstructionScreen(
-        activityLabel = Label.Walking,
-        phoneStateLabel = Label.UsingInHand
-    )
+    IMUTransformerTheme {
+        InstructionScreen(
+            activityLabel = Label.Walking,
+            phoneStateLabel = Label.UsingInHand,
+            onStartClick = { }
+        )
+    }
 }

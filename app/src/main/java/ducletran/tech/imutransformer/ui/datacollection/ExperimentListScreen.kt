@@ -10,26 +10,45 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.capitalize
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import ducletran.tech.imutransformer.ui.theme.IMUTransformerTheme
 import ducletran.tech.imutransformer.ui.theme.OrangeLight
+import ducletran.tech.imutransformer.ui.viewmodel.ExperimentListViewModel
+import ducletran.tech.imutransformer.R
+import ducletran.tech.imutransformer.ui.navigation.IMUScreen
 
 data class Experiment(
     val name: String,
-    val highlighted: Boolean
+    val highlighted: Boolean,
+    val id: Long
 )
 
 @Composable
 fun ExperimentListScreenWithNav(navController: NavController) {
+    val experimentListViewModel: ExperimentListViewModel = viewModel()
+    val experiments = experimentListViewModel.experimentsState.collectAsState().value
+        .map {
+            Experiment(
+                highlighted = true,
+                name = it.description,
+                id = it.id
+            )
+        }
     ExperimentListScreen(
         modifier = Modifier.fillMaxSize(),
-        experiments = emptyList(),
-        onExperimentClick = {}
+        experiments = experiments,
+        onExperimentClick = {
+            navController.navigate(IMUScreen.RunExperiment.formatRouteWithId(it.id))
+        }
     )
 }
 
@@ -41,7 +60,13 @@ private fun ExperimentListScreen(
     onExperimentClick: (Experiment) -> Unit
 ) {
     LazyColumn(modifier = modifier) {
-        item("top_spacer") { Spacer(modifier = Modifier.height(16.dp)) }
+        item("top_spacer") {
+            Text(
+                modifier = Modifier.padding(16.dp),
+                text = stringResource(id = R.string.select_experiment_description),
+                fontWeight = FontWeight.Bold
+            )
+        }
         val (highlightedExperiments, normalExperiments) = experiments.partition { it.highlighted }
 
         items(highlightedExperiments, key = { it.name }) { exp ->
@@ -100,11 +125,11 @@ private fun PreviewExperimentList() {
     IMUTransformerTheme {
         ExperimentListScreen(
             experiments = listOf(
-                Experiment("Walking Test", true),
-                Experiment("All kind of stuff with phone location", false),
-                Experiment("Standing Test", true),
-                Experiment("Running Test", false),
-                Experiment("Teaching Test", false)
+                Experiment("Walking Test", true, 1L),
+                Experiment("All kind of stuff with phone location", false, 2L),
+                Experiment("Standing Test", true, 3L),
+                Experiment("Running Test", false, 4L),
+                Experiment("Teaching Test", false, 5L)
             ),
             onExperimentClick = { }
         )

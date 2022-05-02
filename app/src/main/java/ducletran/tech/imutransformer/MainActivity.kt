@@ -15,13 +15,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import dagger.hilt.android.AndroidEntryPoint
 import ducletran.tech.imutransformer.ui.components.FullScreenText
 import ducletran.tech.imutransformer.ui.datacollection.ExperimentListScreenWithNav
+import ducletran.tech.imutransformer.ui.datacollection.ExperimentScreenWithNav
 import ducletran.tech.imutransformer.ui.label.CreateLabelScreenMain
 import ducletran.tech.imutransformer.ui.label.LabelListScreenWithNav
 import ducletran.tech.imutransformer.ui.model.IntelligenceModelScreenWithNav
@@ -118,6 +121,15 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(IMUScreen.CreateExperiment.route) {
                             FullScreenText(text = "Create an experiment")
+                        }
+                        composable(
+                            route = IMUScreen.RunExperiment.route,
+                            arguments = listOf(navArgument("id") { type = NavType.LongType })
+                        ) {
+                            ExperimentScreenWithNav(
+                                navController = navController,
+                                experimentId = requireNotNull(it.arguments?.getLong("id"))
+                            )
                         }
                     }
                 }

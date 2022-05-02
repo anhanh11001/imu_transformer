@@ -24,7 +24,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import ducletran.tech.imutransformer.R
 
 @Composable
-fun StepInputScreen(modifier: Modifier = Modifier) {
+fun StepInputScreen(
+    modifier: Modifier = Modifier,
+    onStepCountConfirmed: (Int) -> Unit
+) {
     var stepCounted by rememberSaveable { mutableStateOf(0) }
     Column(
         modifier = modifier.padding(16.dp),
@@ -41,7 +44,7 @@ fun StepInputScreen(modifier: Modifier = Modifier) {
         )
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = {
-
+            onStepCountConfirmed(stepCounted)
         }) {
             Text(text = stringResource(id = R.string.confirm))
         }
@@ -52,7 +55,11 @@ fun StepInputScreen(modifier: Modifier = Modifier) {
 @Composable
 private fun PreviewStepInputScreen() {
     IMUTransformerTheme {
-        StepInputScreen(modifier = Modifier.fillMaxSize())
+        StepInputScreen(
+            modifier = Modifier.fillMaxSize(),
+            onStepCountConfirmed = { _ ->
 
+            }
+        )
     }
 }
