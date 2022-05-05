@@ -1,21 +1,17 @@
 package ducletran.tech.imutransformer.ui.datacollection
 
-import android.content.Context
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import ducletran.tech.imutransformer.model.ExperimentStep
 import ducletran.tech.imutransformer.ui.utils.SlotLayoutData
 import ducletran.tech.imutransformer.ui.viewmodel.ExperimentViewModel
 import ducletran.tech.imutransformer.utils.FileHelper
-import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
-import java.io.OutputStreamWriter
 
 @Composable
 fun ExperimentScreenWithNav(

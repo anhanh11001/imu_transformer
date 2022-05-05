@@ -48,6 +48,9 @@ fun ExperimentListScreenWithNav(navController: NavController) {
         experiments = experiments,
         onExperimentClick = {
             navController.navigate(IMUScreen.RunExperiment.formatRouteWithId(it.id))
+        },
+        onCustomExperienceClick = {
+            navController.navigate(IMUScreen.CustomExperimentSetup.route)
         }
     )
 }
@@ -57,9 +60,21 @@ fun ExperimentListScreenWithNav(navController: NavController) {
 private fun ExperimentListScreen(
     modifier: Modifier = Modifier,
     experiments: List<Experiment>,
-    onExperimentClick: (Experiment) -> Unit
+    onExperimentClick: (Experiment) -> Unit,
+    onCustomExperienceClick: () -> Unit
 ) {
     LazyColumn(modifier = modifier) {
+        item("custom_experience") {
+            ExperimentCard(
+                modifier = Modifier.padding(16.dp).fillMaxWidth(),
+                experiment = Experiment(
+                    name = stringResource(id = R.string.custom_experiment),
+                    highlighted = true,
+                    id = -1L
+                ),
+                onClick = onCustomExperienceClick
+            )
+        }
         item("top_spacer") {
             Text(
                 modifier = Modifier.padding(16.dp),
@@ -115,7 +130,6 @@ private fun ExperimentCard(
 
             Text(text = experiment.name.capitalize(Locale.current))
         }
-
     }
 }
 
@@ -131,7 +145,8 @@ private fun PreviewExperimentList() {
                 Experiment("Running Test", false, 4L),
                 Experiment("Teaching Test", false, 5L)
             ),
-            onExperimentClick = { }
+            onExperimentClick = { },
+            onCustomExperienceClick = { }
         )
     }
 }

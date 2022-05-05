@@ -23,4 +23,11 @@
     <string name="create_label">Create label</string>
     <string name="running_experiment">Running experiment</string>
     <string name="experiment_starting">Experiment is about to start</string>
+    <string name="custom_experiment">Custom experiment</string>
+    <string name="select_phone_state">Select phone state</string>
+    <string name="select_human_activity">Select human activity</string>
+    <string name="delay_start_time">Delay start time</string>
+    <string name="delay_time_hint">Enter the initial delay time of the experiment</string>
+    <string name="running_time">Running time</string>
+    <string name="running_time_hint">Enter the running time of the experiment</string>
 </resources>

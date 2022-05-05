@@ -31,6 +31,7 @@ import ducletran.tech.imutransformer.ui.datacollection.ExperimentScreenWithNav
 import ducletran.tech.imutransformer.ui.label.CreateLabelScreenMain
 import ducletran.tech.imutransformer.ui.label.LabelListScreenWithNav
 import ducletran.tech.imutransformer.ui.ai.IntelligenceModelScreenWithNav
+import ducletran.tech.imutransformer.ui.datacollection.CustomExperimentSetupScreenWithNav
 import ducletran.tech.imutransformer.ui.navigation.BottomTab
 import ducletran.tech.imutransformer.ui.navigation.IMUScreen
 import ducletran.tech.imutransformer.ui.theme.IMUTransformerTheme
@@ -133,6 +134,13 @@ class MainActivity : ComponentActivity() {
                         composable(BottomTab.Model.route) {
                             layoutData = SlotLayoutData(stringResource(id = R.string.ai_model))
                             IntelligenceModelScreenWithNav(navController = navController)
+                        }
+                        composable(IMUScreen.CustomExperimentSetup.route) {
+                            layoutData = SlotLayoutData(
+                                stringResource(id = R.string.custom_experiment),
+                                isBackButtonEnabled = true
+                            )
+                            CustomExperimentSetupScreenWithNav(navController = navController)
                         }
                         composable(IMUScreen.CreateLabel.route) {
                             layoutData = SlotLayoutData(

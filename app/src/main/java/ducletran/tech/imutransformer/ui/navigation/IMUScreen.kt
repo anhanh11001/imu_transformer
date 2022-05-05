@@ -7,4 +7,5 @@ sealed class IMUScreen(val route: String) {
     object RunExperiment : IMUScreen("experiment/{id}") {
         fun formatRouteWithId(id: Long) = "experiment/$id"
     }
+    object CustomExperimentSetup : IMUScreen("custom_experiment")
 }
