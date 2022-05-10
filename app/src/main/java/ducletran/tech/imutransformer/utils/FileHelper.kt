@@ -8,8 +8,9 @@ import java.util.*
 object FileHelper {
 
     fun randomFileName(
-        fileType: String = "csv"
-    ): String = "data_${UUID.randomUUID()}.$fileType"
+        fileType: String = "csv",
+        label: Label
+    ): String = "${label.name}_data_${UUID.randomUUID()}.$fileType"
 
     fun formatSensorData(
         sensorData: SensorInformation,

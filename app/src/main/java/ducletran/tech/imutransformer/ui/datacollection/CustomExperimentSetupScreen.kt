@@ -78,7 +78,10 @@ private fun CustomExperimentSetupScreen(modifier: Modifier = Modifier) {
         is CustomExperimentSetupState.Running -> {
             val context = LocalContext.current
             val externalCacheFile =
-                File(context.getExternalFilesDir(null), FileHelper.randomFileName())
+                File(
+                    context.getExternalFilesDir(null),
+                    FileHelper.randomFileName(label = currentState.phoneStateLabel)
+                )
             val stream = FileOutputStream(externalCacheFile)
             stream.write(FileHelper.columnNames.toByteArray())
             stream.write("\n".toByteArray())

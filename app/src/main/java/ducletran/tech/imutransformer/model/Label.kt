@@ -8,11 +8,11 @@ sealed class Label(
     object Standing : Label("standing", LabelType.HUMAN_ACTIVITY)
     object Sitting : Label("sitting", LabelType.HUMAN_ACTIVITY)
 
-    object LyingOnDesk : Label("lying on the desk", LabelType.PHONE_STATE)
-    object InsideTheBag : Label("inside the bag", LabelType.PHONE_STATE)
-    object InsidePantPocket : Label("inside the pant pocket", LabelType.PHONE_STATE)
-    object HoldingInHand : Label("holding in hand", LabelType.PHONE_STATE)
-    object UsingInHand : Label("being used in hand", LabelType.PHONE_STATE)
+    object LyingOnDesk : Label("lyingonthedesk", LabelType.PHONE_STATE)
+    object InsideTheBag : Label("insidethebag", LabelType.PHONE_STATE)
+    object InsidePantPocket : Label("insidethepantpocket", LabelType.PHONE_STATE)
+    object HoldingInHand : Label("holdinginhand", LabelType.PHONE_STATE)
+    object UsingInHand : Label("beingusedinhand", LabelType.PHONE_STATE)
 
     data class Custom(override val name: String) : Label(name, LabelType.OTHERS)
 }

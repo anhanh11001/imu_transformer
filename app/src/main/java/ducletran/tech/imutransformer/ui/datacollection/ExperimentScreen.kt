@@ -56,8 +56,11 @@ fun ExperimentScreenWithNav(
         }
         is ExperimentStep.Running -> {
             val context = LocalContext.current
-            val externalCacheFile =
-                File(context.getExternalFilesDir(null), FileHelper.randomFileName())
+            val previousStep = state.steps[state.currentStepIndex - 1] as ExperimentStep.Instruction
+            val externalCacheFile = File(
+                context.getExternalFilesDir(null),
+                FileHelper.randomFileName(label = previousStep.phoneStateLabel)
+            )
             val stream = FileOutputStream(externalCacheFile)
             stream.write(FileHelper.columnNames.toByteArray())
             stream.write("\n".toByteArray())
@@ -70,17 +73,14 @@ fun ExperimentScreenWithNav(
                     experimentViewModel.nextStep()
                 },
                 onSensorDataCollected = {
-                    val previousStep = state.steps[state.currentStepIndex - 1]
-                    if (previousStep is ExperimentStep.Instruction) {
-                        stream.write(
-                            FileHelper.formatSensorData(
-                                sensorData = it,
-                                activityLabel = previousStep.activityLabel,
-                                phoneStateLabel = previousStep.phoneStateLabel
-                            ).toByteArray()
-                        )
-                        stream.write("\n".toByteArray())
-                    }
+                    stream.write(
+                        FileHelper.formatSensorData(
+                            sensorData = it,
+                            activityLabel = previousStep.activityLabel,
+                            phoneStateLabel = previousStep.phoneStateLabel
+                        ).toByteArray()
+                    )
+                    stream.write("\n".toByteArray())
                 }
             )
         }
