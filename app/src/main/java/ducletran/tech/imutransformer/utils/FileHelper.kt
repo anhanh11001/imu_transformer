@@ -3,6 +3,7 @@ package ducletran.tech.imutransformer.utils
 import android.os.Environment
 import ducletran.tech.imutransformer.model.Label
 import ducletran.tech.imutransformer.model.SensorInformation
+import java.text.SimpleDateFormat
 import java.util.*
 
 object FileHelper {
@@ -17,8 +18,12 @@ object FileHelper {
         activityLabel: Label,
         phoneStateLabel: Label
     ): String {
+        val simpleFormatter = SimpleDateFormat(
+            "dd MMM yyyy HH:mm:ss:SSS Z",
+            Locale.getDefault()
+        )
         return arrayOf(
-            sensorData.time.toString(),
+            simpleFormatter.format(sensorData.time),
             sensorData.accelerometerData.x.toString(),
             sensorData.accelerometerData.y.toString(),
             sensorData.accelerometerData.z.toString(),
