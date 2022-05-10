@@ -115,8 +115,8 @@ private fun SetupScreen(
     state: CustomExperimentSetupState.Selection,
     onConfirm: (Label, Label, Long, Long) -> Unit
 ) {
-    var initialDelayTime by remember { mutableStateOf(0L) }
-    var runningTime by remember { mutableStateOf(0L) }
+    var initialDelayTime by remember { mutableStateOf(10L) }
+    var runningTime by remember { mutableStateOf(60L) }
     var selectedPhoneLabel by remember { mutableStateOf<Label?>(null) }
     var selectedHumanActivityLabel by remember { mutableStateOf<Label?>(null) }
 
