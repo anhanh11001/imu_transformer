@@ -41,7 +41,8 @@ sealed class CustomExperimentSetupState {
         val phoneStateLabel: Label,
         val humanActivityLabel: Label,
         val preparationTime: Long,
-        val runningTime: Long
+        val runningTime: Long,
+        val fileName: String?
     ) : CustomExperimentSetupState()
 
     object Finish : CustomExperimentSetupState()
@@ -64,12 +65,13 @@ private fun CustomExperimentSetupScreen(modifier: Modifier = Modifier) {
             SetupScreen(
                 modifier = modifier,
                 state = currentState,
-                onConfirm = { phoneState, activity, delayTime, runningTime ->
+                onConfirm = { phoneState, activity, delayTime, runningTime, fileName ->
                     state = CustomExperimentSetupState.Running(
                         phoneStateLabel = phoneState,
                         humanActivityLabel = activity,
                         preparationTime = delayTime * 1000,
-                        runningTime = runningTime * 1000
+                        runningTime = runningTime * 1000,
+                        fileName = fileName
                     )
                 }
             )
@@ -77,11 +79,12 @@ private fun CustomExperimentSetupScreen(modifier: Modifier = Modifier) {
         is CustomExperimentSetupState.Finish -> FinishExperimentScreen(modifier = modifier)
         is CustomExperimentSetupState.Running -> {
             val context = LocalContext.current
-            val externalCacheFile =
-                File(
-                    context.getExternalFilesDir(null),
-                    FileHelper.randomFileName(label = currentState.phoneStateLabel)
-                )
+            val csvFileName = if (currentState.fileName == null) {
+                FileHelper.randomFileName(label = currentState.phoneStateLabel)
+            } else {
+                FileHelper.toCSVFileName(currentState.fileName, isCollectingData = true)
+            }
+            val externalCacheFile = File(context.getExternalFilesDir(null), csvFileName)
             val stream = FileOutputStream(externalCacheFile)
             stream.write(FileHelper.columnNames.toByteArray())
             stream.write("\n".toByteArray())
@@ -113,18 +116,31 @@ private fun CustomExperimentSetupScreen(modifier: Modifier = Modifier) {
 private fun SetupScreen(
     modifier: Modifier = Modifier,
     state: CustomExperimentSetupState.Selection,
-    onConfirm: (Label, Label, Long, Long) -> Unit
+    onConfirm: (Label, Label, Long, Long, String?) -> Unit
 ) {
     var initialDelayTime by remember { mutableStateOf(10L) }
     var runningTime by remember { mutableStateOf(60L) }
     var selectedPhoneLabel by remember { mutableStateOf<Label?>(null) }
     var selectedHumanActivityLabel by remember { mutableStateOf<Label?>(null) }
+    var fileName by remember { mutableStateOf("") }
 
     Column(
         modifier = modifier
             .padding(horizontal = 16.dp)
             .verticalScroll(rememberScrollState())
     ) {
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+            text = stringResource(id = R.string.enter_file_name),
+            fontWeight = FontWeight.Bold
+        )
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = fileName,
+            onValueChange = { fileName = it.trim() },
+            label = { Text(stringResource(id = R.string.file_name)) },
+            placeholder = { Text(stringResource(id = R.string.enter_file_name)) }
+        )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = stringResource(id = R.string.select_phone_state),
@@ -202,7 +218,8 @@ private fun SetupScreen(
                         requireNotNull(selectedPhoneLabel),
                         requireNotNull(selectedHumanActivityLabel),
                         initialDelayTime,
-                        runningTime
+                        runningTime,
+                        fileName.takeIf { it.isNotBlank() }
                     )
                 },
                 enabled = runningTime > 0L &&
@@ -213,7 +230,7 @@ private fun SetupScreen(
                 Text(text = stringResource(id = R.string.confirm))
             }
         }
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(256.dp))
     }
 }
 
@@ -223,7 +240,7 @@ private fun PreviewSelection() {
     IMUTransformerTheme {
         SetupScreen(
             state = CustomExperimentSetupState.Selection(),
-            onConfirm = { _, _, _, _ ->
+            onConfirm = { _, _, _, _, _ ->
 
             }
         )
