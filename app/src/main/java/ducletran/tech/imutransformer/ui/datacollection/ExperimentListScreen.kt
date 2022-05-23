@@ -51,6 +51,9 @@ fun ExperimentListScreenWithNav(navController: NavController) {
         },
         onCustomExperienceClick = {
             navController.navigate(IMUScreen.CustomExperimentSetup.route)
+        },
+        onStepTrackingClick = {
+            navController.navigate(IMUScreen.StepTracking.route)
         }
     )
 }
@@ -61,12 +64,28 @@ private fun ExperimentListScreen(
     modifier: Modifier = Modifier,
     experiments: List<Experiment>,
     onExperimentClick: (Experiment) -> Unit,
-    onCustomExperienceClick: () -> Unit
+    onCustomExperienceClick: () -> Unit,
+    onStepTrackingClick: () -> Unit
 ) {
     LazyColumn(modifier = modifier) {
+        item("step_tracking") {
+            ExperimentCard(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth(),
+                experiment = Experiment(
+                    name = stringResource(id = R.string.step_tracking),
+                    highlighted = true,
+                    id = -1L
+                ),
+                onClick = onStepTrackingClick
+            )
+        }
         item("custom_experience") {
             ExperimentCard(
-                modifier = Modifier.padding(16.dp).fillMaxWidth(),
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth(),
                 experiment = Experiment(
                     name = stringResource(id = R.string.custom_experiment),
                     highlighted = true,
@@ -146,7 +165,8 @@ private fun PreviewExperimentList() {
                 Experiment("Teaching Test", false, 5L)
             ),
             onExperimentClick = { },
-            onCustomExperienceClick = { }
+            onCustomExperienceClick = { },
+            onStepTrackingClick = { }
         )
     }
 }

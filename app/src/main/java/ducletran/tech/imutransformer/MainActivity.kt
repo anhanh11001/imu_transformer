@@ -32,6 +32,7 @@ import ducletran.tech.imutransformer.ui.label.CreateLabelScreenMain
 import ducletran.tech.imutransformer.ui.label.LabelListScreenWithNav
 import ducletran.tech.imutransformer.ui.ai.IntelligenceModelScreenWithNav
 import ducletran.tech.imutransformer.ui.datacollection.CustomExperimentSetupScreenWithNav
+import ducletran.tech.imutransformer.ui.datacollection.StepTrackingScreenWithNav
 import ducletran.tech.imutransformer.ui.navigation.BottomTab
 import ducletran.tech.imutransformer.ui.navigation.IMUScreen
 import ducletran.tech.imutransformer.ui.theme.IMUTransformerTheme
@@ -141,6 +142,13 @@ class MainActivity : ComponentActivity() {
                                 isBackButtonEnabled = true
                             )
                             CustomExperimentSetupScreenWithNav(navController = navController)
+                        }
+                        composable(IMUScreen.StepTracking.route) {
+                            layoutData = SlotLayoutData(
+                                stringResource(id = R.string.step_tracking),
+                                isBackButtonEnabled = true
+                            )
+                            StepTrackingScreenWithNav(navController = navController)
                         }
                         composable(IMUScreen.CreateLabel.route) {
                             layoutData = SlotLayoutData(

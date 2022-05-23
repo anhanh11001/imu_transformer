@@ -13,6 +13,18 @@ object FileHelper {
         label: Label
     ): String = "${label.name}_data_${UUID.randomUUID()}.$fileType"
 
+    fun toCSVFileName(
+        fileName: String,
+        isTrackingStep: Boolean = false,
+        isCollectingData: Boolean = false
+    ): String = when {
+        isTrackingStep -> "${fileName}_steptracking.csv"
+        isCollectingData -> "${fileName}_datacollection.csv"
+        else -> throw IllegalArgumentException(
+            "Invalid file name type. Either isTrackingStep or isCollectingData should be True."
+        )
+    }
+
     fun formatSensorData(
         sensorData: SensorInformation,
         activityLabel: Label,
@@ -37,6 +49,8 @@ object FileHelper {
             activityLabel.name,
         ).joinToString(",")
     }
+
+    val stepColumnNames = arrayOf("date").joinToString(",")
 
     val columnNames = arrayOf(
         "date",
